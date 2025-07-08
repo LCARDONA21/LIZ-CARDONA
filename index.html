@@ -4,93 +4,19 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Generador Rover Scout Interactivo</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/docx/7.7.0/docx.umd.min.js"></script>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #fff1f2;
-      margin: 2rem;
-      color: #1e293b;
-    }
-    header {
-      background: linear-gradient(to right, #991b1b, #b91c1c);
-      color: white;
-      padding: 1rem 1rem 2.5rem;
-      text-align: center;
-      border-radius: 12px;
-      position: relative;
-    }
-    header img {
-      position: absolute;
-      top: 1rem;
-      left: 1rem;
-      height: 60px;
-    }
-    header::after {
-      content: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Horquilla_rover.png/64px-Horquilla_rover.png');
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-    }
-    header::before {
-      content: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Buho_Rover.png/64px-Buho_Rover.png');
-      position: absolute;
-      bottom: 1rem;
-      left: 1rem;
-    }
-    header .lema {
-      position: absolute;
-      bottom: 0.5rem;
-      right: 1rem;
-      font-style: italic;
-      font-weight: bold;
-      font-size: 1rem;
-      color: #fecaca;
-    }
-    .form-box {
-      background: white;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-      max-width: 600px;
-      margin: 2rem auto;
-    }
-    label {
-      display: block;
-      margin-bottom: 0.5rem;
-      font-weight: bold;
-    }
-    input {
-      width: 100%;
-      padding: 0.5rem;
-      border: 1px solid #fca5a5;
-      border-radius: 8px;
-    }
-    button {
-      margin-top: 1.5rem;
-      padding: 0.75rem 1.5rem;
-      background-color: #b91c1c;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    #resultado {
-      margin-top: 2rem;
-      background-color: #fff;
-      padding: 1rem;
-      border-left: 5px solid #b91c1c;
-      border-radius: 8px;
-      white-space: pre-wrap;
-    }
-    footer {
-      text-align: center;
-      margin-top: 3rem;
-      font-size: 0.9rem;
-      color: #991b1b;
-      font-weight: bold;
-    }
+    body { font-family: 'Segoe UI', sans-serif; background-color: #fff1f2; margin: 2rem; color: #1e293b; }
+    header { background: linear-gradient(to right, #991b1b, #b91c1c); color: white; padding: 1rem 1rem 2.5rem; text-align: center; border-radius: 12px; position: relative; }
+    header img { position: absolute; top: 1rem; left: 1rem; height: 60px; }
+    header::after { content: url('https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Horquilla_rover.png/64px-Horquilla_rover.png'); position: absolute; top: 1rem; right: 1rem; }
+    header::before { content: url('https://upload.wikimedia.org/wikipedia/commons/thumb/2/27/Buho_Rover.png/64px-Buho_Rover.png'); position: absolute; bottom: 1rem; left: 1rem; }
+    header .lema { position: absolute; bottom: 0.5rem; right: 1rem; font-style: italic; font-weight: bold; font-size: 1rem; color: #fecaca; }
+    .form-box { background: white; padding: 1.5rem; border-radius: 12px; box-shadow: 0 6px 12px rgba(0,0,0,0.1); max-width: 600px; margin: 2rem auto; }
+    label { display: block; margin-bottom: 0.5rem; font-weight: bold; }
+    input { width: 100%; padding: 0.5rem; border: 1px solid #fca5a5; border-radius: 8px; }
+    button { margin-top: 1.5rem; padding: 0.75rem 1.5rem; background-color: #b91c1c; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+    #resultado { margin-top: 2rem; background-color: #fff; padding: 1rem; border-left: 5px solid #b91c1c; border-radius: 8px; white-space: pre-wrap; }
+    footer { text-align: center; margin-top: 3rem; font-size: 0.9rem; color: #991b1b; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -123,7 +49,7 @@
       ['objetivo_esp_1', 'Objetivo específico 1: Ej: Capacitar a los rovers en reciclaje.'],
       ['objetivo_esp_2', 'Objetivo específico 2: Ej: Realizar al menos 2 jornadas.'],
       ['objetivo_esp_3', 'Objetivo específico 3: Ej: Sensibilizar a 50 personas.'],
-      ['justificacion', '¿Por qué es importante este proyecto? \n Explica la necesidad, problema o motivación.'],
+      ['justificacion', '¿Por qué es importante este proyecto?\nExplica la necesidad, problema o motivación.'],
       ['descripcion', 'Describe el proyecto completo: actividades, lugar, responsables.'],
       ['duracion', '¿Cuánto dura el proyecto? Ej: 3 días, 1 mes'],
       ['fechas', '¿Cuándo se realizará? Ej: Del 10 al 20 de septiembre de 2025'],
@@ -161,27 +87,27 @@
         input.style.display = "none";
         this.querySelector('button').style.display = "none";
 
+        // Llamada al endpoint de IA
         const response = await fetch("https://proyecto-rover-api.onrender.com/generar_proyecto", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(respuestas)
         });
-
         const result = await response.json();
         resultado.innerText = result.proyecto;
 
+        // Botón para descargar DOCX desde servidor
         const buttonDOCX = document.createElement("button");
         buttonDOCX.innerText = "📄 Descargar en Word";
         buttonDOCX.style.marginTop = '1rem';
         buttonDOCX.onclick = async () => {
-          const { Document, Packer, Paragraph, TextRun } = window.docx;
-          const doc = new Document({
-            sections: [{
-              children: [new Paragraph({ children: [new TextRun(result.proyecto)] })]
-            }]
+          const resp = await fetch("https://proyecto-rover-api.onrender.com/descargar_docx", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ proyecto: result.proyecto })
           });
-          const blob = await Packer.toBlob(doc);
-          const link = document.createElement('a');
+          const blob = await resp.blob();
+          const link = document.createElement("a");
           link.href = URL.createObjectURL(blob);
           link.download = "Proyecto_Rover.docx";
           link.click();
